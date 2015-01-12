@@ -64,7 +64,7 @@ if (Meteor.isServer) {
     check(limit, Number);
     Counts.publish(this, 'feedList1', Feed.list1(), { noReady: true });
 
-    Meteor._sleepForMs(2000);
+    Meteor._sleepForMs(1000);
 
     return Feed.list1({ limit: limit });
   });
@@ -73,7 +73,7 @@ if (Meteor.isServer) {
     check(limit, Number);
     Counts.publish(this, 'feedList2', Feed.list2(), { noReady: true });
 
-    Meteor._sleepForMs(2000);
+    Meteor._sleepForMs(1000);
 
     return Feed.list2({ limit: limit });
   });
