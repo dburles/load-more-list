@@ -8,12 +8,20 @@ Factory.define('feed', Feed, {
 
 Feed.list1 = function(options) {
   options = _.extend({ sort: { createdAt: -1 }}, options);
-  return Feed.find({}, options);
+
+  if (Meteor.isServer)
+    return Feed.find({}, options);
+  if (Meteor.isClient)
+    return Feed.findFromPublication('feedList1', {}, options);
 };
 
 Feed.list2 = function(options) {
   options = _.extend({ sort: { createdAt: 1 }}, options);
-  return Feed.find({}, options);
+
+  if (Meteor.isServer)
+    return Feed.find({}, options);
+  if (Meteor.isClient)
+    return Feed.findFromPublication('feedList2', {}, options);
 };
 
 if (Meteor.isClient) {
@@ -60,20 +68,20 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
 
-  Meteor.publish('feedList1', function(limit) {
+  FindFromPublication.publish('feedList1', function(limit) {
     check(limit, Number);
     Counts.publish(this, 'feedList1', Feed.list1(), { noReady: true });
 
-    Meteor._sleepForMs(2000);
+    Meteor._sleepForMs(1000);
 
     return Feed.list1({ limit: limit });
   });
 
-  Meteor.publish('feedList2', function(limit) {
+  FindFromPublication.publish('feedList2', function(limit) {
     check(limit, Number);
     Counts.publish(this, 'feedList2', Feed.list2(), { noReady: true });
 
-    Meteor._sleepForMs(2000);
+    Meteor._sleepForMs(1000);
 
     return Feed.list2({ limit: limit });
   });
