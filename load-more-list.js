@@ -1,19 +1,19 @@
-Feed = new Mongo.Collection('feed');
+Contacts = new Mongo.Collection('contacts');
 
-Factory.define('feed', Feed, {
-  createdAt: function() { return new Date(); },
-  name: function() { return Fake.user().fullname; },
-  message: function() { return Fake.sentence(); }
+Contacts.helpers({
+  fullName: function() {
+    return this.name.first + ' ' + this.name.last;
+  }
 });
 
-Feed.list1 = function(options) {
-  options = _.extend({ sort: { createdAt: -1 }}, options);
-  return Feed.find({}, options);
+Contacts.list1 = function(options) {
+  options = _.extend({ sort: { 'name.last': 1 }}, options);
+  return Contacts.find({}, options);
 };
 
-Feed.list2 = function(options) {
-  options = _.extend({ sort: { createdAt: 1 }}, options);
-  return Feed.find({}, options);
+Contacts.list2 = function(options) {
+  options = _.extend({ sort: { 'name.last': -1 }}, options);
+  return Contacts.find({}, options);
 };
 
 if (Meteor.isClient) {
@@ -45,43 +45,44 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.feedList1.helpers({
+  Template.contactsList1.helpers({
     cursor: function() {
-      return Feed.list1;
+      return Contacts.list1;
     }
   });
 
-  Template.feedList2.helpers({
+  Template.contactsList2.helpers({
     cursor: function() {
-      return Feed.list2;
+      return Contacts.list2;
     }
   });
 }
 
 if (Meteor.isServer) {
 
-  Meteor.publish('feedList1', function(limit) {
+  Meteor.publish('contactsList1', function(limit) {
     check(limit, Number);
-    Counts.publish(this, 'feedList1', Feed.list1(), { noReady: true });
+    Counts.publish(this, 'contactsList1', Contacts.list1(), { noReady: true });
 
     Meteor._sleepForMs(1000);
 
-    return Feed.list1({ limit: limit });
+    return Contacts.list1({ limit: limit });
   });
 
-  Meteor.publish('feedList2', function(limit) {
+  Meteor.publish('contactsList2', function(limit) {
     check(limit, Number);
-    Counts.publish(this, 'feedList2', Feed.list2(), { noReady: true });
+    Counts.publish(this, 'contactsList2', Contacts.list2(), { noReady: true });
 
     Meteor._sleepForMs(1000);
 
-    return Feed.list2({ limit: limit });
+    return Contacts.list2({ limit: limit });
   });
 
   Meteor.startup(function() {
-    if (Feed.find().count() === 0) {
-      _.times(100, function() {
-        Factory.create('feed');
+    if (Contacts.find().count() === 0) {
+      var users = JSON.parse(Assets.getText('users.json')).results;
+      _.each(users, function(user) {
+        Contacts.insert(user.user);
       });
     }
   });

@@ -5,29 +5,27 @@
 
 <body>
   <div class="container">
-    <h1>List Component Example</h1>
+    <h1>Contacts</h1>
 
     <div class="row">
-      <div class="col-md-6">{{> feedList1}}</div>
-      <div class="col-md-6">{{> feedList2}}</div>
+      <div class="col-md-6">{{> contactsList1}}</div>
+      <div class="col-md-6">{{> contactsList2}}</div>
     </div>
   </div>
 </body>
 
 <template name="componentList">
-  <table class="table">
-    <tbody>
-      {{#each items}}
-        {{> componentListItem}}
-      {{/each}}
-    </tbody>
-  </table>
+  <ul class="list-group">
+    {{#each items}}
+      {{> componentListItem}}
+    {{/each}}
+  </ul>
 
   {{#if showLoadButton}}
     <hr>
     <button data-load class="btn btn-default center-block">
       {{#if loading}}
-        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;
+        <i class="fa fa-refresh fa-refresh-animate"></i>&nbsp;
         Loading
       {{else}}
         Load More
@@ -37,16 +35,16 @@
 </template>
 
 <template name="componentListItem">
-  <tr>
-    <td>{{name}}</td>
-    <td>{{message}}</td>
-  </tr>
+  <li class="list-group-item">
+    <img class="picture img-circle" src="{{picture.thumbnail}}">
+    <span class="name">{{fullName}}</span>
+  </li>
 </template>
 
-<template name="feedList1">
-  {{> componentList cursor=cursor subscription="feedList1"}}
+<template name="contactsList1">
+  {{> componentList cursor=cursor subscription="contactsList1"}}
 </template>
 
-<template name="feedList2">
-  {{> componentList cursor=cursor subscription="feedList2"}}
+<template name="contactsList2">
+  {{> componentList cursor=cursor subscription="contactsList2"}}
 </template>

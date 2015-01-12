@@ -1,4 +1,4 @@
-.glyphicon-refresh-animate {
+.fa-refresh-animate {
   -animation: spin 1s infinite linear;
   -webkit-animation: spin2 1s infinite linear;
 }
@@ -9,4 +9,12 @@
 @keyframes spin {
   from { transform: scale(1) rotate(0deg); }
   to { transform: scale(1) rotate(360deg); }
+}
+.name {
+  text-transform: capitalize;
+  padding-left: 10px;
+}
+.picture {
+  width: 50px;
+  height: 50px;
 }
