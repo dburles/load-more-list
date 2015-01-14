@@ -1,0 +1,16 @@
+<template name="messagesList">
+  <table class="table">
+    <tbody>
+      {{#each this}}
+        {{> messagesListItem}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="messagesListItem">
+  <tr>
+    <td>{{name}}</td>
+    <td>{{message}}</td>
+  </tr>
+</template>

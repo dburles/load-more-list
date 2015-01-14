@@ -1,0 +1,15 @@
+<template name="booksList">
+  <table class="table">
+    <tbody>
+      {{#each this}}
+        {{> booksListItem}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="booksListItem">
+  <tr>
+    <td>{{name}}</td>
+  </tr>
+</template>

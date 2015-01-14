@@ -1,0 +1,19 @@
+<head>
+  <title>load-more-list</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div class="container">
+    <h1>List Component Example</h1>
+
+    <div class="row">
+      <div class="col-md-6">
+        {{> componentList cursor=messagesListCursor subscription="messagesList" template="messagesList"}}
+      </div>
+      <div class="col-md-6">
+        {{> componentList cursor=booksListCursor subscription="booksList" template="booksList"}}
+      </div>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,15 @@
+<template name="componentList">
+  {{> Template.dynamic template=template data=items}}
+
+  {{#if showLoadButton}}
+    <hr>
+    <button data-load class="btn btn-default center-block">
+      {{#if loading}}
+        <i class="fa fa-refresh fa-refresh-animate"></i>&nbsp;
+        Loading
+      {{else}}
+        Load More
+      {{/if}}
+    </button>
+  {{/if}}
+</template>
