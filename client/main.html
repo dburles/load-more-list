@@ -5,14 +5,19 @@
 
 <body>
   <div class="container">
-    <h1>List Component Example</h1>
-
     <div class="row">
       <div class="col-md-6">
-        {{> componentList cursor=messagesListCursor subscription="messagesList" template="messagesList"}}
+        {{> componentList
+            cursor=messagesListCursor
+            subscription="messagesList"
+            template="messagesList"}}
       </div>
       <div class="col-md-6">
-        {{> componentList cursor=booksListCursor subscription="booksList" template="booksList"}}
+        {{> componentList
+            cursor=booksListCursor
+            subscription="booksList"
+            template="booksList"
+            limitBy=2}}
       </div>
     </div>
   </div>

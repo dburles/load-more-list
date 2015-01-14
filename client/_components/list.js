@@ -1,6 +1,6 @@
 Template.componentList.created = function() {
   var self = this;
-  self.limitBy = 6;
+  self.limitBy = this.data.limitBy || 6;
   self.limit = new ReactiveVar(self.limitBy);
   self.autorun(function() {
     self.subscription = Meteor.subscribe(self.data.subscription, self.limit.get());
