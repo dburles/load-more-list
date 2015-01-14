@@ -8,20 +8,18 @@
     <h1>List Component Example</h1>
 
     <div class="row">
-      <div class="col-md-6">{{> feedList1}}</div>
-      <div class="col-md-6">{{> feedList2}}</div>
+      <div class="col-md-6">
+        {{> componentList cursor=messagesListCursor subscription="messagesList" template="messagesList"}}
+      </div>
+      <div class="col-md-6">
+
+      </div>
     </div>
   </div>
 </body>
 
 <template name="componentList">
-  <table class="table">
-    <tbody>
-      {{#each items}}
-        {{> componentListItem}}
-      {{/each}}
-    </tbody>
-  </table>
+  {{> Template.dynamic template=template data=items}}
 
   {{#if showLoadButton}}
     <hr>
@@ -36,17 +34,27 @@
   {{/if}}
 </template>
 
-<template name="componentListItem">
+<template name="messagesList">
+  <table class="table">
+    <tbody>
+      {{#each this}}
+        {{> messagesListItem}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="messagesListItem">
   <tr>
     <td>{{name}}</td>
     <td>{{message}}</td>
   </tr>
 </template>
 
-<template name="feedList1">
-  {{> componentList cursor=cursor subscription="feedList1"}}
+<template name="booksList">
+  ...
 </template>
 
-<template name="feedList2">
-  {{> componentList cursor=cursor subscription="feedList2"}}
+<template name="booksListItem">
+  ...
 </template>

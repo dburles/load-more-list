@@ -1,19 +1,25 @@
-Feed = new Mongo.Collection('feed');
+Messages = new Mongo.Collection('messages');
+Books = new Mongo.Collection('books');
 
-Factory.define('feed', Feed, {
+Factory.define('message', Messages, {
   createdAt: function() { return new Date(); },
   name: function() { return Fake.user().fullname; },
   message: function() { return Fake.sentence(); }
 });
 
-Feed.list1 = function(options) {
+Factory.define('book', Books, {
+  createdAt: function() { return new Date(); },
+  name: function() { return Fake.sentence(); }
+});
+
+Messages.list = function(options) {
   options = _.extend({ sort: { createdAt: -1 }}, options);
-  return Feed.find({}, options);
+  return Messages.find({}, options);
 };
 
-Feed.list2 = function(options) {
+Books.list = function(options) {
   options = _.extend({ sort: { createdAt: 1 }}, options);
-  return Feed.find({}, options);
+  return Books.find({}, options);
 };
 
 if (Meteor.isClient) {
@@ -45,43 +51,48 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.feedList1.helpers({
-    cursor: function() {
-      return Feed.list1;
+  Template.body.helpers({
+    messagesListCursor: function() {
+      return Messages.list;
     }
   });
 
-  Template.feedList2.helpers({
-    cursor: function() {
-      return Feed.list2;
+  Template.booksList.helpers({
+    booksListCursor: function() {
+      return Books.list;
     }
   });
 }
 
 if (Meteor.isServer) {
 
-  Meteor.publish('feedList1', function(limit) {
+  Meteor.publish('messagesList', function(limit) {
     check(limit, Number);
-    Counts.publish(this, 'feedList1', Feed.list1(), { noReady: true });
+    Counts.publish(this, 'messagesList', Messages.list(), { noReady: true });
 
     Meteor._sleepForMs(1000);
 
-    return Feed.list1({ limit: limit });
+    return Messages.list({ limit: limit });
   });
 
-  Meteor.publish('feedList2', function(limit) {
+  Meteor.publish('booksList', function(limit) {
     check(limit, Number);
-    Counts.publish(this, 'feedList2', Feed.list2(), { noReady: true });
+    Counts.publish(this, 'booksList', Books.list(), { noReady: true });
 
     Meteor._sleepForMs(1000);
 
-    return Feed.list2({ limit: limit });
+    return Books.list({ limit: limit });
   });
 
   Meteor.startup(function() {
-    if (Feed.find().count() === 0) {
+    if (Messages.find().count() === 0) {
       _.times(100, function() {
-        Factory.create('feed');
+        Factory.create('message');
+      });
+    }
+    if (Books.find().count() === 0) {
+      _.times(50, function() {
+        Factory.create('book');
       });
     }
   });
